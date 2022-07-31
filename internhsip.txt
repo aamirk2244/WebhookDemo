@@ -1,0 +1,184 @@
+19/july/2022
+my object (offer,properties,feedback,Favorite
+created a global picklist on the standard object
+created a custom picklist on the standard object (region and Zone
+created dependent field on the Account object  (i.e when region is selected the corresponding time zones will be displayed.. i.e if pakistan is selected as region then the karachi,islambadad , lahore , etc will be displayed,)
+
+Users are able to edit fields which are 'Read Only' as per Field Level Security or on the Page layout. This behavior is seen if the Profile associated with the User has 'Edit Read Only Fields' select
+
+created custome piclist (multiselct ) on the Opourtunity object , user can select multiple picklist , field name is (Close Reason) i.e why you close the opportunity
+
+only master details relation supports the rollup summary
+loop up relation doesn't support the rollup summary 
+
+master detail relation example. i.e student cannot exist without college, so the parent of student obj will be the college             ( parent child relation, tightly coupled)
+lookup detail relation example i.e option could have answers or maybe not..
+
+
+
+created lookup filter          ( lookup filter ? )
+how to add standard object(user) to the navbar?
+
+
+
+
+
+simple formula
+advance formula  ( based on some condition
+
+created a formula(commision) for calculated discount on the opportunity object
+created a formula that concatenate the region/zone , on the opportunity object
+flow builder is automation ( i.e sending bill pdf to user after month)
+
+
+20/july/2022
+(how to create flow ? -> first create flow , then add this to the button and link section->action , then add to the layout section)
+
+two types      ( screen , auto launched)
+
+created a flow of contact, which save data to standard contact object
+
+then added this contact flow to the property object page layout as a new action (not working, I am not able to insert the flow to the layout)
+
+
+for creating lookup flow , the field API name will be the lookup field of child API name, i.e AccountId in Opportunity object, and the API object name will be the API name of Opportunity..i.e opportunity..(you can find these name in opportunity(child) fiedl and rlation..
+
+created a lookup flow on for opportunity object, in Account ( i.e it will fetch the data from opportunity object)
+
+created multiple screen flow on account in Account object, naming "MY Account"  
+
+
+21/july/2022
+
+created a custom label "Account description"
+to get the record id , you need to create a variable using new resource section
+
+created a auto launched flow, then added to the process builder ( first creatd a update record flow, then create record flow , then send to chatter flow            
+(i.e when new record is created in Account object then the message will be delivered in chatter section) , *** this flow will be started when the education is selected from Industry picklist.. i.e some  data from account fields are cought to update flow
+when the above flow starts it will first update the description field in account, then it will create task record then it will post to chatter
+
+created an update screen flow of sample contact dep ( which will update the dpartment fiedl in contact object to "computer Science") 
+
+-------------
+created a record triggered flow which will be run in the backgound when new oopurtunity is created with the amount > 50000   then will create a new task    (naming opportunit process flow
+
+
+22/july/2022
+
+created a percent field and discount formula field in opportunity which will calculate discount on given amount
+
+created a auto launched flow "Calulate Discounts", created a get record flow naming "Find related Accounts" in this, given the Account object to store to variable, created a two varables, as AccountId and OpportunityId
+
+Actually this flow will execute when the button is clicked from opportunity section , this is will get the Account Id, (now will do the discount based on the anual revenue field of Account, i.e if annual revenue > 200000000, then the "Discount percent" value will be added by update flow, and hence the "Discount percent" field is actually a formula , it will automatically calculate the Discount on Amount in opportunity
+
+added an update flow which will update the opporunity 
+
+created a string array test method in apex
+
+25/july/2022
+
+created an apex class "Account Handler" which will insert given input into account and will get the result back
+
+	difference between SOSL and SOQL (soql can find element in one object at a time where SOSL query cal find field(element)in all objects in one query
+	another difference
+	"searching for 'Digital' in SOSL returns records whose field values are 'Digital' or 'The Digital Company' etc,"
+
+create an apex class "ContactSearch" which get records on given lastName
+
+created an apex class for SOSL query "ContactAndLeadSearch" and search "smith"
+use query editor for SOSL inorder to test your query results
+
+created a trigger "AccountAddressTrigger" which sets the shpping postal code to billing postal code if the billing address checkbox is selected
+
+*** created  ClosedOpportunityTrigger on opportunity , which will create TASK if the StageName is 'Closed Won', It is working fine but the test couldn't be pass on ,why?
+
+
+created a test case for predefince code , test class name is TestVerifyDate
+
+26/july/2022
+
+created a test case for trigger , test class name "TestRestrictContactByName"
+created RandomContactFactory class for inserting contacts
+created TestRandomContactFactory to test if the insertion are correct or not
+
+Batch Apex (Batch job) batch size by default is 200  records (max size 2000)
+for batch job (implementing an interface of Database.Batchable is must) which inforce start,execute and finish methods (override)
+Batch example i.e 1k records , you want to split into 200 size of batches, which will create 5 batches, hence now execute method will be called 5 times
+
+Future Apex is used to run processes in a separate thread, at a later time when system resources become available.
+
+27/july/2022
+
+created AccountProcessor class with future method , which count contacts for each account, with the test class of AccountProcessorTest
+
+created a LeadProcessor batch class which update the LeadSource field in Lead object
+
+future methods can only hold primitive datatype parameters whereas queueable methods can hold both i.e nonprimitive as well , like (List<Account> myArg) as parameters
+queueable transaction could be synchronize i.e chain 
+
+created AddPrimaryContact class for queueable apex which creates the contact for each Account whose billing = 'CA' (i.e the argument which was passed)
+
+
+created a schedule queue Apex which insert lead field if the LeadSource field is = temp
+
+
+28/july/2022                skip soap
+
+call outs (like an api call)
+**two ways to test callout , one is to create a static resource file , i.e txt file and enter your json text of the api
+** second way is to use HTTP mock interface 
+https://trailhead.salesforce.com/content/learn/modules/apex_integration_services/apex_integration_rest_callouts
+
+I tried both
+
+/services/apexrest/Accounts/<Record ID>/contacts                   where /services/apexrest/ will be the default
+
+
+--> created AnimalLocator class for callout
+--> created AnimalLocatorTest for testing callouts
+--> created AnimalLocatorMock for testing with this mock instead of static resource file
+
+created AccountManager class for restApi to get the accounts and their contacts
+created AccountManagerTest class for testing
+
+					30/july/2022
+json2apex (online website for converting json to apex class automatically)
+-> inserted the case via standard api using workbench using /services/data/v54.0/sobjects/Case/
+{
+
+"Subject" : "inserted via Standar Api",
+"Status" : "Insertion Successfull"
+
+
+}
+
+-> extracted data via standard salesforce api using workbench using /services/data/v54.0/query?q=Select Subject from Case
+
+ /services/data/v54.0/sobjects/Case/describe       will give the description of the Case object
+ -> access the api through curl request on linux terminal
+ 
+ consumerKey for the connected app named as "SampleApp From Terminal Access"
+ 3MVG95mg0lk4batixcFPRoFK6xNjot2ZDCAOTF6Zov2RL12f2Qc6UEOZD6qLK_kCz4qEse3mj4ehTpOc.Ydb.
+ consumerSecret=
+ EBAB7584882B754EA1E2BC8469A006B48F53D6273A644B616CB0BEEDD7A6CF4B
+ 
+ userName =
+ aamirk2244@brave-moose-ayzm9u.com
+ securityToken=
+ zcPh6KTialKbqZxKrlgx1CWLa
+ get your salesforce password from google
+ 
+ curl -v https://login.salesforce.com/services/oauth2/token -d "grant_type=password" -d "client_id=<your_consumer_key>" -d "client_secret=<your_consumer_secret>" -d "username=<your_username>" -d "password=<your_password_and_security_token>" -H "X-PrettyPrint:1"
+ 								
+ 								(WEB Hooks)
+  
+  -> Enabled apex classe named "WebhookDemo" in the setup site->sample siteName is "Sample Get Push Notifications", now the inserted class name ("WebhookDemo") will be executed when the url is visited 
+  
+  There are multiple site which supports webhooks , we will use github for that , it also supports 
+  It will work like when something is push to the github , we will get the details through webhook
+  
+  (github webhook explain = Webhooks allow external services to be notified when certain events happen. When the specified events happen, we’ll send a POST request to each of the URLs you provide.)
+  
+  -> created a webhook on github and added our path of site to it , which will get the details when the push is done to github
+  
+  
