@@ -181,4 +181,8 @@ json2apex (online website for converting json to apex class automatically)
   
   -> created a webhook on github and added our path of site to it , which will get the details when the push is done to github
   
+  pushed sample file to the direcotry , and it worked (i.e that class is called which was enabled with webhook i.e apex class)
+ check details of push in your github repository->setting->webhook->payLoad
+  Now the payload data could be used in that class
+  
   
